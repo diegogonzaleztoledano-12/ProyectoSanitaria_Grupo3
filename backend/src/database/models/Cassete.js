@@ -11,68 +11,78 @@ Cassete.init(
       autoIncrement: true,
     },
 
-    observaciones: {
-      type: DataTypes.STRING(100),
+    fecha: {
+      type: DataTypes.DATE,
+      allowNull: false,
       validate: {
         notEmpty: {
-          msg: "La observación.",
+          msg: "La fecha no puede estar vacía.",
         },
-        len: {
-          args: [2, 100],
-          msg: "La observación del cassete debe tener entre 2 y 100 caracteres",
+        isDate: {
+          msg: "Debe ser una fecha válida.",
         },
       },
     },
 
-    direccion: {
+    observaciones: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+      validate: {
+        len: {
+          args: [2, 100],
+          msg: "La observación debe tener entre 2 y 100 caracteres",
+        },
+      },
+    },
+
+    descripcion: {
       type: DataTypes.STRING(150),
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "La dirección no puede estar vacía.",
+          msg: "La descripción no puede estar vacía.",
         },
         len: {
           args: [5, 150],
-          msg: "La dirección de la agencia debe tener entre 5 y 150 caracteres",
+          msg: "La descripción debe tener entre 5 y 150 caracteres",
         },
       },
     },
 
-    telefono: {
-      type: DataTypes.STRING(9),
+    caracteristicas: {
+      type: DataTypes.STRING(200),
+      allowNull: true,
+      validate: {
+        len : {
+          args:[5,200],
+          msg: "Las caracteristicas del cassete deben tener entre 5 y 200 caracteres."
+        }
+      }
+    },
+
+    qr_cassete: {
+      type: DataTypes.STRING,
       allowNull: false,
       unique: {
-        msg: "El teléfono ya está registrado.",
+        msg: "El QR ya está registrado.",
       },
       validate: {
         notEmpty: {
-          msg: "El teléfono no puede estar vacío.",
-        },
-        is: {
-          args: [/^[6789][0-9]{8}$/],
-          msg: "El teléfono no tiene un formato válido.",
+          msg: "El QR no puede estar vacío.",
         },
       },
+    },
 
-      email: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-        unique: {
-          msg: "El email ya está registrado.",
+    organo: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "El órgano no puede estar vacío.",
         },
-        validate: {
-          isEmail: {
-            msg: "El email no tiene un formato válido.",
-          },
-          len: {
-            args: [5, 100],
-            msg: "El email debe tener entre 5 y 100 caracteres",
-          },
-          noDoubleDotOrSpaces(value) {
-            if (value.includes(" ") || value.includes("..")) {
-              throw new Error("El email no es correcto.");
-            }
-          },
+        len: {
+          args: [2, 100],
+          msg: "El órgano debe tener entre 2 y 100 caracteres",
         },
       },
     },
@@ -81,7 +91,7 @@ Cassete.init(
     sequelize,
     tableName: "cassetes",
     timestamps: false,
-  },
+  }
 );
 
 module.exports = Cassete;
