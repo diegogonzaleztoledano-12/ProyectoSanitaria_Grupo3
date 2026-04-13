@@ -10,8 +10,6 @@ Imagen.init(
             primaryKey: true,
             autoIncrement: true,
         },
-    },
-    {
         imagen: {
             type : DataTypes.BLOB('long'),
             allowNull: true

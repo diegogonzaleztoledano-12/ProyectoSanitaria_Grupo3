@@ -1,5 +1,16 @@
-//const tabla = require("./models/Tabla");
+const Usuario = require("../models/Usuario");
+const Muestra = require("../models/Muestra");
+const Cassete = require("../models/Cassete");
+const Imagen = require("../models/Imagen");
 
-//Cliente.hasMany(Compra, { foreignKey: "id_cliente" });
+// Un usuario tiene muchas muestras
+Usuario.hasMany(Muestra, { foreignKey: "usuarioId" });
+Muestra.belongsTo(Usuario, { foreignKey: "usuarioId" });
 
-//Compra.belongsTo(Cliente, { foreignKey: "id_cliente" });
+// Una muestra pertenece a un cassete, y un cassete puede tener muchas muestras
+Cassete.hasMany(Muestra, { foreignKey: "casseteId" });
+Muestra.belongsTo(Cassete, { foreignKey: "casseteId" });
+
+// Una imagen puede pertenecer a un cassete, y un cassete puede tener muchas imagenes
+Cassete.hasMany(Imagen, { foreignKey: "casseteId" });
+Imagen.belongsTo(Cassete, { foreignKey: "casseteId" });
