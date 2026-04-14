@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const casseteController = require("../controllers/casseteController");
+const authjwt = require("../middlewares/jwt")
 
 /**
  * @swagger
@@ -12,7 +13,7 @@ const casseteController = require("../controllers/casseteController");
  *       200:
  *         description: OK
  */
-router.get("/", casseteController.getAllCassetes);
+router.get("/", authjwt, casseteController.getAllCassetes);
 
 /**
  * @swagger
@@ -30,7 +31,7 @@ router.get("/", casseteController.getAllCassetes);
  *       200:
  *         description: OK
  */
-router.get("/:id", casseteController.getCasseteById);
+router.get("/:id", authjwt,casseteController.getCasseteById);
 
 /**
  * @swagger
@@ -42,7 +43,7 @@ router.get("/:id", casseteController.getCasseteById);
  *       201:
  *         description: Creado
  */
-router.post("/", casseteController.createCassete);
+router.post("/", authjwt, casseteController.createCassete);
 
 /**
  * @swagger
@@ -60,7 +61,7 @@ router.post("/", casseteController.createCassete);
  *       200:
  *         description: OK
  */
-router.put("/:id", casseteController.updateCassete);
+router.put("/:id", authjwt,casseteController.updateCassete);
 
 /**
  * @swagger
@@ -78,6 +79,6 @@ router.put("/:id", casseteController.updateCassete);
  *       204:
  *         description: Eliminado
  */
-router.delete("/:id", casseteController.deleteCassete);
+router.delete("/:id", authjwt,casseteController.deleteCassete);
 
 module.exports = router;
