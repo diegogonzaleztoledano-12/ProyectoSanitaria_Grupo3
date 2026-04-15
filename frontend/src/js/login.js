@@ -1,3 +1,6 @@
+const form = document.getElementById("form");
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Referencias a los elementos del DOM
     const loginSection = document.getElementById('login-section');
@@ -27,4 +30,24 @@ document.addEventListener('DOMContentLoaded', () => {
         // Restaurar título
         mainTitle.textContent = 'Login';
     });
-});
+})
+
+const validarFormulario = (event) => {
+  let valido = true;
+ event.preventDefault();
+
+  const form = event.target; 
+  const formData = new FormData(form);
+
+    //ahora tengo que sacar cada elemento del form, creo que era un fromObjetcs o algo asi
+    
+
+
+
+  if (valido) {
+    form.submit();
+  }
+}; 
+
+
+form.addEventListener("submit", validarFormulario);
