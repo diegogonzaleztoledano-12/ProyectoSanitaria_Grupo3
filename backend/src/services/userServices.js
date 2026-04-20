@@ -1,24 +1,28 @@
 const Usuario  = require("../database/models/Usuario");
 
-const validateUserModel = async (email, password) => {
-  await Usuario.build({ email_user: email, password_user: password }).validate();
+const validateUserModel = async (email, password, centro, nombre, apellidos) => {
+  await Usuario.build({ email: email, password: password, centro: centro, nombre: nombre, apellidos: apellidos }).validate();
 };
 
 const findUserByEmail = async (email) => {
   return await Usuario.findOne({ where: { email: email } });
 };
 
-const createUser = async (email, passwordHash) => {
+const createUser = async (email, passwordHash, centro, nombre, apellidos, rol) => {
   return await Usuario.create({
-    email_user: email,
-    password_user: passwordHash,
+    email: email,
+    password: passwordHash,
+    rol: rol,
+    centro: centro,
+    nombre: nombre,
+    apellidos: apellidos
   });
 };
 
 const saveResetToken = async (email, token, expires) => {
     return await Usuario.update(
         { resetToken: token, resetTokenExpires: expires },
-        { where: { email_user: email } }
+        { where: { email: email } }
     );
 };
 
@@ -28,7 +32,7 @@ const findUserByResetToken = async (token) => {
 
 const updatePassword = async (userId, password) => {
     return await Usuario.update(
-        { password_user: password },
+        { password: password },
         { where: { id_user: userId } }
     );
 };

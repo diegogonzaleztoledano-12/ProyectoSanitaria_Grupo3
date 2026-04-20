@@ -7,7 +7,7 @@ const crypto = require('crypto');
 
 // Controlador para registrar un nuevo usuario
 const register = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, centro, rol, nombre, apellidos } = req.body;
     if (!email || !password) {
         return res.status(400).json({
             error: "Error de autenticación",
@@ -15,10 +15,10 @@ const register = async (req, res) => {
         });
     }
     try {
-        await userService.validateUserModel(email, password);
+        await userService.validateUserModel(email, password, centro, rol,nombre, apellidos);
 
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const newUser = await userService.createUser(email, hashedPassword);
+        const newUser = await userService.createUser(email, hashedPassword, centro, rol, nombre, apellidos);
         if (!newUser) {
             return res.status(500).json({
                 error: "Error en el servidor",
@@ -27,7 +27,7 @@ const register = async (req, res) => {
         }
         res.status(201).json({
             message: "Usuario registrado",
-            data: { email: newUser.email_user },
+            data: { email: newUser.email },
         });
     } catch (error) {
         if (error.name === "SequelizeValidationError") {
@@ -75,7 +75,7 @@ const login = async (req, res) => {
         const token = jwt.sign(
             {
                 userId: user.id_user,
-                email: user.email_user
+                email: user.email
             },
             process.env.JWT_SECRET,
             {
@@ -88,7 +88,7 @@ const login = async (req, res) => {
         res.status(200).json({
             message: "Login correcto",
             token: token,
-            data: { email: user.email_user },
+            data: { email: user.email },
         });
     } catch (error) {
         if (error.name === "SequelizeValidationError") {
