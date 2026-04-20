@@ -2,12 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const nombre = document.getElementById('nombre');
     const apellidos = document.getElementById('apellidos');
     const centro = document.getElementById('centro');
-    const useremail = document.getElementById('useremail');
-    const password = document.getElementById('password');
+    const useremail = document.getElementById('useremail-reg');
+    const password = document.getElementById('password-reg');
     const password2 = document.getElementById('password2');
 
     const showError = (input, message) => {
-        const errorElement = input.nextElementSibling;
+        const errorElement = input.closest('.form__group').querySelector('.form__error-message');
         errorElement.textContent = message;
         input.classList.toggle('invalid', message !== '');
     };
@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // VALIDACIÓN CONTRASEÑA
     password.addEventListener('input', () => {
-        const errorElement = password.parentElement.nextElementSibling;
         let message = '';
         if (password.validity.tooShort) {
             message = 'La contraseña debe tener al menos 8 caracteres.';
@@ -63,18 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (password.validity.patternMismatch) {
             message = 'La contraseña debe contener al menos una mayúscula, una minúscula, un número y un símbolo.';
         }
-        errorElement.textContent = message;
-        password.classList.toggle('invalid', message !== '');
+        showError(password, message);
     });
 
     // VALIDACIÓN REPETIR CONTRASEÑA
     password2.addEventListener('input', () => {
-        const errorElement = password2.parentElement.nextElementSibling;
         let message = '';
         if (password.value !== password2.value) {
             message = 'Las contraseñas no coinciden.';
         }
-        errorElement.textContent = message;
-        password2.classList.toggle('invalid', message !== '');
+        showError(password2, message);
     });
+     
 });
