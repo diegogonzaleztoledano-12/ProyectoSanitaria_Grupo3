@@ -176,3 +176,11 @@ body {
     margin-top: 5px;
     min-height: 1rem;
 }
+
+.forgot-form {
+    display: none;
+}
+
+.register-form {
+    display: none;
+}
