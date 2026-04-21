@@ -103,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 apellidos: apellidos.value,
                 email: useremail.value,
                 password: password.value,
-                rol: 0,
                 centro: centro.value,
             };
 

@@ -7,7 +7,7 @@ const crypto = require('crypto');
 
 // Controlador para registrar un nuevo usuario
 const register = async (req, res) => {
-    const { email, password, centro, rol, nombre, apellidos } = req.body;
+    const { email, password, centro, nombre, apellidos } = req.body;
     if (!email || !password) {
         return res.status(400).json({
             error: "Error de autenticación",
@@ -15,10 +15,10 @@ const register = async (req, res) => {
         });
     }
     try {
-        await userService.validateUserModel(email, password, centro, rol,nombre, apellidos);
+        await userService.validateUserModel(email, password, centro, 0,nombre, apellidos);
 
         const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const newUser = await userService.createUser(email, hashedPassword, centro, rol, nombre, apellidos);
+        const newUser = await userService.createUser(email, hashedPassword, centro, 0, nombre, apellidos);
         if (!newUser) {
             return res.status(500).json({
                 error: "Error en el servidor",
