@@ -13,7 +13,7 @@ const authjwt = require("../middlewares/jwt")
  *       200:
  *         description: OK
  */
-router.get("/", authjwt, casseteController.getAllCassetes);
+router.get("/", casseteController.getAllCassetes);
 
 /**
  * @swagger
