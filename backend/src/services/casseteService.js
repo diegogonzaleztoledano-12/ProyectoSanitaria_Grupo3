@@ -9,7 +9,6 @@ const getCasseteById = async (id) => {
 };
 
 const createCassete = async (data) => {
-  console.log("Service: createCassete in DB", data);
   return await Cassete.create(data);
 };
 

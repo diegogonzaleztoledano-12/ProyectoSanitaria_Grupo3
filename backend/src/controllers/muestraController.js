@@ -57,10 +57,22 @@ const deleteMuestra = async (req, res) => {
   };
 };
 
+const createImagenForMuestra = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const imagen = req.file.buffer.toString('base64');
+        const createdImagen = await muestraService.createImagenForMuestra(id, imagen);
+        res.status(201).json(createdImagen);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
   getAllMuestras,
   getMuestraById,
   createMuestra,
   updateMuestra,
-  deleteMuestra
+  deleteMuestra,
+  createImagenForMuestra
 };

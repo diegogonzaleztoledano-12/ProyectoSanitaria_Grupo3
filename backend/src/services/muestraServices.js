@@ -1,38 +1,37 @@
-let muestras = [
-  { id: 1, tipo: "Tejido", descripcion: "Muestra A1", casseteId: 1 },
-  { id: 2, tipo: "Sangre", descripcion: "Muestra B2", casseteId: 1 },
-  { id: 3, tipo: "Tejido", descripcion: "Muestra C1", casseteId: 2 },
-];
+const { Muestra, Imagen } = require('../database/db/associations');
 
 const getAllMuestras = async () => {
-  return muestras;
+  return await Muestra.findAll({ include: [Imagen] });
 };
 
 const getMuestraById = async (id) => {
-  return muestras.find(m => m.id == id);
+  return await Muestra.findByPk(id, { include: [Imagen] });
 };
 
 const createMuestra = async (data) => {
-  const newMuestra = {
-    id: muestras.length > 0 ? Math.max(...muestras.map(m => m.id)) + 1 : 1,
-    ...data, 
-  };
-  muestras.push(newMuestra);
-  return newMuestra;
+  return await Muestra.create(data);
 };
 
 const updateMuestra = async (id, data) => {
-  const index = muestras.findIndex(m => m.id == id);
-  if (index === -1) return null;
-  muestras[index] = { ...muestras[index], ...data };
-  return muestras[index];
+  const muestra = await Muestra.findByPk(id);
+  if (!muestra) return null;
+  await muestra.update(data);
+  return muestra;
 };
 
 const deleteMuestra = async (id) => {
-  const index = muestras.findIndex(m => m.id == id);
-  if (index === -1) return false;
-  muestras.splice(index, 1);
+  const muestra = await Muestra.findByPk(id);
+  if (!muestra) return false;
+  await muestra.destroy();
   return true;
+};
+
+const createImagenForMuestra = async (muestraId, imagenData) => {
+    const imagen = await Imagen.create({
+        muestraId: muestraId,
+        imagen: Buffer.from(imagenData, 'base64')
+    });
+    return imagen;
 };
 
 module.exports = {
@@ -41,4 +40,5 @@ module.exports = {
   createMuestra,
   updateMuestra,
   deleteMuestra,
+  createImagenForMuestra
 };

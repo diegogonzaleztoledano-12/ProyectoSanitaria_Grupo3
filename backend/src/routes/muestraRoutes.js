@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const muestraController = require("../controllers/muestraController");
 const authjwt = require("../middlewares/jwt")
+const upload = require('../middlewares/multer');
 /**
  * @swagger
  * components:
@@ -74,6 +75,8 @@ router.post("/", authjwt, muestraController.createMuestra);
  *       201:
  *         description: Creada
  */
+
+router.post("/:id/imagen", authjwt, upload.single('imagen'), muestraController.createImagenForMuestra);
 
 router.put("/:id", authjwt, muestraController.updateMuestra);
 /**
