@@ -12,7 +12,14 @@ Imagen.init(
         },
         imagen: {
             type : DataTypes.BLOB('long'),
-            allowNull: true
+            allowNull: true,
+            get() {
+                const data = this.getDataValue('imagen');
+                // Convertimos el Buffer a Base64 directamente aquí en el backend antes de enviarlo.
+                // Hacerlo en el frontend implicaría enviar un array gigante de números JSON
+                // ({"type":"Buffer", "data":[255, 216...]}) lo cual es lentísimo y pesa el triple.
+                return data ? data.toString('base64') : null;
+            }
         },
         muestraId: {
             type: DataTypes.INTEGER,
