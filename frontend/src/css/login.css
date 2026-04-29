@@ -177,6 +177,22 @@ body {
     min-height: 1rem;
 }
 
+/* form__message */
+.form__message {
+    margin-bottom: 1rem;
+    font-weight: bold;
+    text-align: center;
+    min-height: 1.2rem;
+}
+
+.form__message--error {
+    color: #ff0000;
+}
+
+.form__message--success {
+    color: #28a745;
+}
+
 .forgot-form {
     display: none;
 }

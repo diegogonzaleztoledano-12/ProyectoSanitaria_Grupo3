@@ -90,11 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if(registerForm) {
+        const globalMsg = document.getElementById('register-message');
+        
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            if (globalMsg) {
+                globalMsg.textContent = '';
+                globalMsg.className = 'form__message form__message--error';
+            }
 
             if (password.value !== password2.value) {
-                alert('Las contraseñas no coinciden.');
+                if(globalMsg) globalMsg.textContent = 'Las contraseñas no coinciden.';
                 return;
             }
 
@@ -118,14 +125,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (response.ok) {
-                    alert('¡Usuario registrado con éxito! Ahora puedes iniciar sesión.');
-                    window.location.reload();
+                    if(globalMsg) {
+                        globalMsg.className = 'form__message form__message--success';
+                        globalMsg.textContent = '¡Usuario registrado con éxito! Ahora puedes iniciar sesión.';
+                    }
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 } else {
-                    alert(`Error al registrar: ${result.errores.join(', ')}`);
+                    if(globalMsg) globalMsg.textContent = `Error al registrar: ${result.errores ? result.errores.join(', ') : 'Ocurrió un error'}`;
                 }
             } catch (error) {
                 console.error('Error de red o al conectar con el servidor:', error);
-                alert('No se pudo conectar con el servidor. Revisa la consola para más detalles.');
+                if(globalMsg) globalMsg.textContent = 'No se pudo conectar con el servidor.';
             }
         });
     }

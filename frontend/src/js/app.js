@@ -425,9 +425,11 @@ modalEditOverlay.addEventListener('click', () => {
 //Mostrar detalles al hacer click en el botón de la  tabla   
 tbodycassetes.addEventListener('click', (event) => {
     if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
-        const id = event.target.dataset.id;
+        const btn = event.target.closest('button');
+        const id = btn.dataset.id || event.target.dataset.id;
         cargarCassetesEnPanel(id);
-        idCassete = id;
+        idCassete = id; 
+        cargarMuestras(id);
     }
 });
 
@@ -488,7 +490,7 @@ const renderTablaMuestras = (data) => {
     tbodyMuestras.appendChild(fragment);
 }
 
-const cargarMuestras = async () => {
+const cargarMuestras = async (casseteId) => {
     const token = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
     try {
         const res = await fetch('http://localhost:3000/sanitaria/muestras', {
@@ -500,16 +502,25 @@ const cargarMuestras = async () => {
         });
         if (res.ok) {
             const data = await res.json();
-            renderTablaMuestras(data);
+            if (Array.isArray(data)) {
+                if (casseteId) {
+                    const filtradas = data.filter(m => m.casseteId == casseteId);
+                    renderTablaMuestras(filtradas);
+                } else {
+                    renderTablaMuestras([]);
+                }
+            } else {
+                console.error('Data from /muestras is not an array:', data);
+            }
         }
     } catch (error) {
         console.error('Error cargando muestras:', error);
     }
 }
 
-// Cargar las muestras al inicio
+// Cargar las muestras al inicio (vacías hasta seleccionar cassette)
 document.addEventListener('DOMContentLoaded', () => {
-    cargarMuestras();
+    cargarMuestras(null);
 });
 
 if (formCrearMuestra) {
