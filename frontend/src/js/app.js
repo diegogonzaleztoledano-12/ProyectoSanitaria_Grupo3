@@ -75,7 +75,7 @@ const renderTabla = (data) => {
 
     data.forEach(item => {
         const tr = document.createElement('tr');
-      
+
         const tdFecha = document.createElement('td');
         tdFecha.textContent = formatearFecha(item.fecha);
 
@@ -88,7 +88,7 @@ const renderTabla = (data) => {
         const tdBtn = document.createElement('td');
         const btn = document.createElement('button');
         btn.dataset.id = item.idCassete;
-    
+
         const icon = document.createElement('i');
         icon.className = 'fa-solid fa-file-lines';
 
@@ -115,12 +115,12 @@ const cargarCassetes = async () => {
     try {
         const res = await fetch('http://localhost:3000/sanitaria/cassetes',
             {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
         let data = await res.json();
         data = aplicarFiltros(data);
 
@@ -136,12 +136,12 @@ const cargarCassetesEnPanel = async (id) => {
     try {
         const res = await fetch('http://localhost:3000/sanitaria/cassetes/' + id,
             {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
         let data = await res.json();
         detailDesc.textContent = data.descripcion;
         detailOrgano.textContent = data.organo;
@@ -233,7 +233,7 @@ const showError = (input, message) => {
     }
 };
 
-if(modalDesc) {
+if (modalDesc) {
     modalDesc.addEventListener('input', () => {
         if (modalDesc.validity.tooShort) {
             showError(modalDesc, 'La descripción debe tener al menos 5caracteres.');
@@ -245,7 +245,7 @@ if(modalDesc) {
     });
 }
 
-if(modalFecha) {
+if (modalFecha) {
     modalFecha.addEventListener('input', () => {
         if (modalFecha.validity.valueMissing) {
             showError(modalFecha, 'Debes seleccionar una fecha.');
@@ -255,7 +255,7 @@ if(modalFecha) {
     });
 }
 
-if(modalOrgano) {
+if (modalOrgano) {
     modalOrgano.addEventListener('input', () => {
         if (modalOrgano.validity.valueMissing) {
             showError(modalOrgano, 'Debes seleccionar un órgano.');
@@ -314,7 +314,7 @@ crear_cassete.addEventListener('submit', (e) => {
         if (modalOrgano.validity.valueMissing) {
             showError(modalOrgano, 'Debes seleccionar un órgano.');
         }
-        return; 
+        return;
     }
 
     console.log('Formulario enviado');
@@ -345,7 +345,7 @@ const btnDeleteCassette = document.getElementById('btn-delete-cassette');
 const modalDeleteClose = document.getElementById('modal-delete-close');
 const modalDeleteOverlay = document.getElementById('modal-delete-overlay');
 const modalEditOverlay = document.getElementById('modal-edit-overlay');
-const modalEdit = document.getElementById('modal-edit');    
+const modalEdit = document.getElementById('modal-edit');
 // Abrir modal
 btnDeleteCassette.addEventListener('click', () => {
     modalDelete.classList.add('active');
@@ -367,15 +367,15 @@ modalDeleteOverlay.addEventListener('click', () => {
 
 const modalEditClose = document.getElementById('modal-edit-close');
 const modalMuestra = document.getElementById('modal-muestra');
-const btnNuevaMuestra = document.getElementById('muestra__modal'); 
+const btnNuevaMuestra = document.getElementById('muestra__modal');
 const modalMuestraClose = document.getElementById('modal-muestra-close');
 const modalMuestraOverlay = document.getElementById('modal-muestra-overlay');
 const btnEditCassette = document.getElementById('btn-edit-cassette');
 const editDesc = document.getElementById('edit-desc');
-    const editFecha = document.getElementById('edit-fecha');
-    const editOrgano = document.getElementById('edit-organo');
-    const editCar = document.getElementById('edit-caract');
-    const editObs = document.getElementById('edit-obs');  
+const editFecha = document.getElementById('edit-fecha');
+const editOrgano = document.getElementById('edit-organo');
+const editCar = document.getElementById('edit-caract');
+const editObs = document.getElementById('edit-obs');
 
 
 modalEditClose.addEventListener('click', () => {
@@ -383,20 +383,20 @@ modalEditClose.addEventListener('click', () => {
 });
 
 btnEditCassette.addEventListener('click', () => {
-    if(detailDesc.textContent != ''){
-    modalEdit.classList.add('active');
-    editDesc.value = detailDesc.textContent;
-    editFecha.value = new Date(detailFecha.textContent.split('-').reverse().join('-')).toISOString().split('T')[0];
-    editOrgano.value = detailOrgano.textContent;
-    editCar.value = detailCaracteristicas.textContent;
-    editObs.value = detailObservaciones.textContent;
-}
+    if (detailDesc.textContent != '') {
+        modalEdit.classList.add('active');
+        editDesc.value = detailDesc.textContent;
+        editFecha.value = new Date(detailFecha.textContent.split('-').reverse().join('-')).toISOString().split('T')[0];
+        editOrgano.value = detailOrgano.textContent;
+        editCar.value = detailCaracteristicas.textContent;
+        editObs.value = detailObservaciones.textContent;
+    }
 });
 // LÓGICA AL HACER CLIC EN "NUEVA MUESTRA"
 if (btnNuevaMuestra && modalMuestra) {
     btnNuevaMuestra.addEventListener('click', () => {
         const alertaBanner = document.getElementById('alert-cassette');
-        
+
         const spanDescripcion = document.querySelector('.details .details__value');
 
         // Comprobamos si la descripción está vacía
@@ -427,7 +427,7 @@ tbodycassetes.addEventListener('click', (event) => {
     if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
         const id = event.target.dataset.id;
         cargarCassetesEnPanel(id);
-        idCassete = id; 
+        idCassete = id;
     }
 });
 
@@ -438,3 +438,165 @@ deleteCassette.addEventListener('click', () => {
     }
 });
 
+// ----------------------
+// GESTIÓN DE MUESTRAS
+// ----------------------
+const tablaMuestras = document.getElementById('tablaMuestras');
+const tbodyMuestras = tablaMuestras.querySelector('tbody');
+const formCrearMuestra = document.getElementById('crear_muestra');
+
+const renderTablaMuestras = (data) => {
+    tbodyMuestras.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+
+    data.forEach(item => {
+        const tr = document.createElement('tr');
+
+        const tdFecha = document.createElement('td');
+        tdFecha.textContent = formatearFecha(item.fecha);
+
+        const tdDesc = document.createElement('td');
+        tdDesc.textContent = item.descripcion;
+
+        const tdTinicion = document.createElement('td');
+        tdTinicion.textContent = item.tinicion;
+
+        const tdBtn = document.createElement('td');
+
+        // Si hay imagenes, crear una pequeña previsualización
+        const imagenes = item.Imagens || item.Imagenes || item.imagenes;
+        if (imagenes && imagenes.length > 0) {
+            const img = document.createElement('img');
+            img.src = `data:image/jpeg;base64,${imagenes[0].imagen}`;
+            img.style.width = '50px';
+            img.style.height = '50px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '5px';
+            tdBtn.appendChild(img);
+        } else {
+            tdBtn.textContent = 'Sin imagen';
+        }
+
+        tr.appendChild(tdFecha);
+        tr.appendChild(tdDesc);
+        tr.appendChild(tdTinicion);
+        tr.appendChild(tdBtn);
+
+        fragment.appendChild(tr);
+    });
+
+    tbodyMuestras.appendChild(fragment);
+}
+
+const cargarMuestras = async () => {
+    const token = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+    try {
+        const res = await fetch('http://localhost:3000/sanitaria/muestras', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            renderTablaMuestras(data);
+        }
+    } catch (error) {
+        console.error('Error cargando muestras:', error);
+    }
+}
+
+// Cargar las muestras al inicio
+document.addEventListener('DOMContentLoaded', () => {
+    cargarMuestras();
+});
+
+if (formCrearMuestra) {
+    formCrearMuestra.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msgDiv = document.getElementById('muestra-message');
+        if (msgDiv) {
+            msgDiv.textContent = '';
+            msgDiv.className = '';
+        }
+
+        if (!formCrearMuestra.checkValidity()) {
+            formCrearMuestra.reportValidity();
+            return;
+        }
+
+        const formData = new FormData(e.target);
+        const file = formData.get('imagen');
+
+        const muestraData = {
+            descripcion: formData.get('descripcion'),
+            fecha: formData.get('fecha'),
+            casseteId: idCassete,
+            tinicion: formData.get('tincion') || formData.get('tinicion'),
+            qr_muestra: formData.get('qr_muestra') || `QR-M-${Date.now()}`,
+            observaciones: formData.get('observaciones') || null
+        };
+
+        const token = document.cookie.split('; ').find(row => row.startsWith('jwt='))?.split('=')[1];
+
+        try {
+            const resMuestra = await fetch('http://localhost:3000/sanitaria/muestras', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(muestraData)
+            });
+
+            if (!resMuestra.ok) {
+                const errorData = await resMuestra.json();
+                console.error("Error backend Muestras:", errorData);
+                if (msgDiv) {
+                    msgDiv.textContent = errorData.error || errorData.message || 'Error al crear muestra';
+                    msgDiv.className = 'msg-error';
+                }
+                return;
+            }
+
+
+            const nuevaMuestra = await resMuestra.json();
+
+            if (file && file.size > 0) {
+                const imageFormData = new FormData();
+                imageFormData.append('imagen', file);
+
+                const resImagen = await fetch(`http://localhost:3000/sanitaria/muestras/${nuevaMuestra.idMuestra}/imagen`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                        // fetch maneja multipart/form-data automáticamente
+                    },
+                    body: imageFormData
+                });
+
+                if (!resImagen.ok) {
+                    console.error('Error subiendo imagen de la muestra');
+                    if (msgDiv) {
+                        msgDiv.textContent = 'Muestra creada pero error al subir la imagen';
+                        msgDiv.className = 'msg-error';
+                    }
+                }
+            }
+
+            // 3. Recargar tabla de muestras
+            cargarMuestras();
+            formCrearMuestra.reset();
+            const modalMuestraElem = document.getElementById('modal-muestra');
+            if (modalMuestraElem) modalMuestraElem.classList.remove('active');
+
+        } catch (error) {
+            if (msgDiv) {
+                msgDiv.textContent = 'Error de red al crear muestra';
+                msgDiv.className = 'msg-error';
+            }
+            console.error('Error:', error);
+        }
+    });
+}

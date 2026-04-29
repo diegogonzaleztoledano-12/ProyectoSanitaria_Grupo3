@@ -1,4 +1,5 @@
-const { Muestra, Imagen } = require('../database/db/associations');
+const Muestra = require('../database/models/Muestra');
+const Imagen = require('../database/models/Imagen');
 
 const getAllMuestras = async () => {
   return await Muestra.findAll({ include: [Imagen] });

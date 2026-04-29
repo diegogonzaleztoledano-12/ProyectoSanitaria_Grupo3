@@ -1,17 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 
-// Configuración de almacenamiento de Multer para guardar en disco
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    // Directorio donde se guardarán las imágenes
-    cb(null, 'src/uploads/'); 
-  },
-  filename: (req, file, cb) => {
-    // Renombrar el archivo para evitar colisiones
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
+const storage = multer.memoryStorage();
 
 // Filtro para aceptar solo ciertos tipos de imagen
 const fileFilter = (req, file, cb) => {
